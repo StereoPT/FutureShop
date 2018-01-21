@@ -1,3 +1,5 @@
+![Banner](https://raw.githubusercontent.com/StereoPT/FutureShop/master/GitBanner.jpg)
+
 # Future Shop
 
 Future Shop is a Idle RPG with a Sci-Fi / Futuristic Theme.
