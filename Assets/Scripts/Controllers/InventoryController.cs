@@ -50,4 +50,19 @@ public class InventoryController : MonoBehaviour {
             prefabText[1].text = stack.item.name;
         }
     }
+
+    private void ClearInventory() {
+        for(int i = 0; i < scrollList.childCount; i++) {
+            GameObject.Destroy(scrollList.GetChild(i).gameObject);
+        }
+    }
+
+    public void LoadInventory(List<ItemStack> loadedList) {
+        ClearInventory();
+        inventory.Clear();
+
+        foreach(ItemStack stack in loadedList) {
+            AddItemToInvetory(stack);
+        }
+    }
 }
