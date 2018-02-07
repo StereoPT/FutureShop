@@ -31,7 +31,6 @@ public class InventoryController : MonoBehaviour {
                 i.amount += stack.amount;
 
                 GameObject go = scrollList.Find(i.item.name).gameObject;
-
                 Text[] prefabText = go.GetComponentsInChildren<Text>();
                 prefabText[0].text = i.amount.ToString();
 
@@ -52,15 +51,15 @@ public class InventoryController : MonoBehaviour {
     }
 
     private void ClearInventory() {
-        for(int i = 0; i < scrollList.childCount; i++) {
+        inventory.Clear();
+        for (int i = 0; i < scrollList.childCount; i++) {
             GameObject.Destroy(scrollList.GetChild(i).gameObject);
         }
     }
 
     public void LoadInventory(List<ItemStack> loadedList) {
         ClearInventory();
-        inventory.Clear();
-
+        
         foreach(ItemStack stack in loadedList) {
             AddItemToInvetory(stack);
         }

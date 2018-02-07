@@ -12,7 +12,10 @@ public class JobController : MonoBehaviour {
 	void Start () {
         foreach(Job j in availableJobs) {
             GameObject go = Instantiate(jobPrefab, jobParent);
-            go.GetComponentInChildren<Text>().text = j.name;
+
+            Text[] labels = go.GetComponentsInChildren<Text>();
+            labels[0].text = j.duration.ToString();
+            labels[1].text = j.name;
 
             go.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(GetItem(go, j.duration)));
         }
