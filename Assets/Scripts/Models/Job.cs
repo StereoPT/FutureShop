@@ -6,4 +6,7 @@ using UnityEngine;
 public class Job {
     public string name;
     public float duration;
+
+    public int minDamage;
+    public int maxDamage;
 }

@@ -4,23 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour {
-
-    public List<Character> availableChars;
+    public Dictionary<Character, GameObject> characterGameObjectMap;
     public GameObject charPrefab;
     public Transform charParent;
 
     public Transform jobPanel;
 
     void Start () {
-	    foreach(Character c in availableChars) {
-            GameObject go = Instantiate(charPrefab, charParent);
+        characterGameObjectMap = new Dictionary<Character, GameObject>();
 
-            go.GetComponentInChildren<Text>().text = c.name;
-            go.GetComponentsInChildren<Image>()[1].gameObject.SetActive(c.isLocked);
+        CreateCharacter(new Character("StereoPT", 15, 5, 3, false));
+        CreateCharacter(new Character("Jon Doe", 15, 5, 3, false));
+    }
 
-            if(!c.isLocked) {
-                go.GetComponent<Button>().onClick.AddListener(() => CanvasController.Instance.ShowPanel(jobPanel));
-            }
-        }	
-	}
+    void CreateCharacter(Character c) {
+        GameObject cGo = Instantiate(charPrefab, charParent);
+        cGo.GetComponent<CharacterDisplay>().character = c;
+
+        characterGameObjectMap.Add(c, cGo);
+
+        if (!c.isLocked) {
+            cGo.GetComponent<Button>().onClick.AddListener(() => {
+                CanvasController.Instance.ShowPanel(jobPanel);
+                JobController.Instance.activeCharacter = c;
+            });
+        }
+    }
 }
