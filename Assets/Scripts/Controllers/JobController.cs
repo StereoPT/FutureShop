@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class JobController : MonoBehaviour {
     public static JobController Instance;
 
-    public List<Job> availableJobs;
+    public Dictionary<Job, GameObject> jobGameObjectMap;
     public GameObject jobPrefab;
     public Transform jobParent;
 
@@ -21,20 +21,27 @@ public class JobController : MonoBehaviour {
 
         Instance = this;
 
-        foreach (Job j in availableJobs) {
-            GameObject go = Instantiate(jobPrefab, jobParent);
+        jobGameObjectMap = new Dictionary<Job, GameObject>();
 
-            Text[] labels = go.GetComponentsInChildren<Text>();
-            labels[0].text = j.duration.ToString();
-            labels[1].text = j.name;
-
-            go.GetComponent<Button>().onClick.AddListener(() => {
-                float level = (activeCharacter.attack + activeCharacter.defense) / 2;
-                float toughness = Mathf.Pow(level, 2) * 10f;
-                StartCoroutine(GetItem(j, go, j.duration, toughness));
-            });
-        }
+        CreateJob(new Job("Drones", 1f, 0, 5));
+        CreateJob(new Job("Droids", 5f, 5, 10));
+        CreateJob(new Job("Enhanced Humans", 10f, 10, 15));
+        CreateJob(new Job("Cyborgs", 20f, 15, 20));
+        CreateJob(new Job("Robots", 30f, 20, 25));
 	}
+
+    void CreateJob(Job j) {
+        GameObject jGo = Instantiate(jobPrefab, jobParent);
+        jGo.GetComponent<JobDisplay>().job = j;
+
+        jobGameObjectMap.Add(j, jGo);
+
+        jGo.GetComponent<Button>().onClick.AddListener(() => {
+            float level = (activeCharacter.attack + activeCharacter.defense) / 2;
+            float toughness = Mathf.Pow(level, 2) * 10f;
+            StartCoroutine(GetItem(j, jGo, j.duration, toughness));
+        });
+    }
 
     IEnumerator GetItem(Job j, GameObject go, float duration, float toughness) {
         int dmg = Random.Range(j.minDamage, j.maxDamage) * 20;

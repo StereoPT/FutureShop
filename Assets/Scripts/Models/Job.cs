@@ -9,4 +9,11 @@ public class Job {
 
     public int minDamage;
     public int maxDamage;
+
+    public Job(string name, float duration, int minDamage, int maxDamage) {
+        this.name = name;
+        this.duration = duration;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+    }
 }
